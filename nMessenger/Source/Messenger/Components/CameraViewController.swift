@@ -70,8 +70,8 @@ open class CameraViewController: UIImagePickerController, UIImagePickerControlle
     //CGFloat to define padding for bottom view
     fileprivate let bottomPadding:CGFloat = 40
     //Bool if user gave permission for the camera
-    fileprivate let isCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(UIImagePickerControllerCameraDevice.rear) ||
-        UIImagePickerController.isCameraDeviceAvailable(UIImagePickerControllerCameraDevice.front)
+    fileprivate let isCameraAvailable = false //UIImagePickerController.isCameraDeviceAvailable(UIImagePickerControllerCameraDevice.rear) ||
+//        UIImagePickerController.isCameraDeviceAvailable(UIImagePickerControllerCameraDevice.front)
     
     //MARK: View Lifecycle
     /**
@@ -103,39 +103,42 @@ open class CameraViewController: UIImagePickerController, UIImagePickerControlle
      Initialise the view and request for permissions if necessary
      */
     fileprivate func initView() {
+        self.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        self.selection = SelectionType.library
+        
         //check if the camera is available
-        if ((UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) && (cameraAuthStatus == AVAuthorizationStatus.authorized)){
-            self.sourceType = UIImagePickerControllerSourceType.camera
-            self.showsCameraControls = false
-            self.selection = SelectionType.camera
-            self.renderCameraElements()
-            
-        } else
-            {
-                self.cameraAuthStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
-                if(photoLibAuthStatus != PHAuthorizationStatus.authorized) {
-                    self.requestPhotoLibraryPermissions({ (granted) in
-                        if(granted) {
-                            self.sourceType = UIImagePickerControllerSourceType.photoLibrary
-                            self.selection = SelectionType.library
-                        }
-                        else
-                        {
-                            self.photoLibAuthStatus = PHPhotoLibrary.authorizationStatus()
-                            self.dismiss(animated: true, completion: {
-                                let presentingViewController = self.cameraDelegate as! NMessengerViewController
-                                ModalAlertUtilities.postGoToSettingToEnableLibraryModal(fromController: presentingViewController)
-                            })
-                        }
-                    })
-                }
-                else
-                {
-                    self.sourceType = UIImagePickerControllerSourceType.photoLibrary
-                    self.selection = SelectionType.library
-                }
-            }
+//        if ((UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) && (cameraAuthStatus == AVAuthorizationStatus.authorized)){
+//            self.sourceType = UIImagePickerControllerSourceType.camera
+//            self.showsCameraControls = false
+//            self.selection = SelectionType.camera
+//            self.renderCameraElements()
+//
+//        } else {
+//            self.cameraAuthStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+//            if(photoLibAuthStatus != PHAuthorizationStatus.authorized) {
+//                self.requestPhotoLibraryPermissions({ (granted) in
+//                    if(granted) {
+//                        self.sourceType = UIImagePickerControllerSourceType.photoLibrary
+//                        self.selection = SelectionType.library
+//                    }
+//                    else
+//                    {
+//                        self.photoLibAuthStatus = PHPhotoLibrary.authorizationStatus()
+//                        self.dismiss(animated: true, completion: {
+//                            let presentingViewController = self.cameraDelegate as! NMessengerViewController
+//                            ModalAlertUtilities.postGoToSettingToEnableLibraryModal(fromController: presentingViewController)
+//                        })
+//                    }
+//                })
+//            }
+//            else
+//            {
+//                self.sourceType = UIImagePickerControllerSourceType.photoLibrary
+//                self.selection = SelectionType.library
+//            }
+//        }
     }
+    
     /**
      Adds all the buttons for the custom camera view
      */
